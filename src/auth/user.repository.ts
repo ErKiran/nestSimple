@@ -25,25 +25,41 @@ export class UserRepository extends Repository<User> {
     }
 
     async generateSalt(): Promise<string> {
-        return await bcrypt.genSalt(10);
+        try {
+            return await bcrypt.genSalt(10);
+        } catch (err) {
+            throw new Error(`Error while generating salt ${err}`);
+        }
     }
 
     private async hashPassword(password: string, salt: string): Promise<string> {
-        return bcrypt.hash(password, salt);
+        try {
+            return bcrypt.hash(password, salt);
+        } catch (err) {
+            throw new Error(`Error while hasing Password ${err}`);
+        }
     }
 
     async validateUser(authCredentialsDto: AuthCredentialsDto): Promise<string> {
-        const { username, password } = authCredentialsDto;
-        const user = await this.findOne({ username });
+        try {
+            const { username, password } = authCredentialsDto;
+            const user = await this.findOne({ username });
 
-        if (user && await this.validatePassword(password, user.password)) {
-            return user.username;
+            if (user && await this.validatePassword(password, user.password)) {
+                return user.username;
+            }
+            return null;
+        } catch (err) {
+            throw new Error(`Error while validating User ${err}`);
         }
-        return null;
     }
 
     async validatePassword(password: string, userPassword: string): Promise<boolean> {
-        const isMatch = await bcrypt.compare(password, userPassword);
-        return isMatch;
+        try {
+            const isMatch = await bcrypt.compare(password, userPassword);
+            return isMatch;
+        } catch (err) {
+            throw new Error(`Error while validating userpassword ${err}`);
+        }
     }
 }

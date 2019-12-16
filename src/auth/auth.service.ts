@@ -14,20 +14,28 @@ export class AuthService {
     ) { }
 
     async signUp(authCredentialsDto: AuthCredentialsDto): Promise<void> {
-        return this.userRepository.signUp(authCredentialsDto);
+        try {
+            return this.userRepository.signUp(authCredentialsDto);
+        } catch (err) {
+            throw new Error(`Can't create User Details `);
+        }
     }
 
     async signIn(authCredentialsDto: AuthCredentialsDto): Promise<{ bearerToken: string }> {
-        const username = await this.userRepository.validateUser(authCredentialsDto);
-        if (!username) {
-            throw new UnauthorizedException('Invalid Credentails');
+        try {
+            const username = await this.userRepository.validateUser(authCredentialsDto);
+            if (!username) {
+                throw new UnauthorizedException('Invalid Credentails');
+            }
+
+            const jwtPayload: JwtPayload = { username };
+            const bearerToken = await this.jwtService.sign(jwtPayload);
+
+            return {
+                bearerToken,
+            };
+        } catch (err) {
+            throw new Error(`Can't login to the server ${err}`);
         }
-
-        const jwtPayload: JwtPayload = { username };
-        const bearerToken = await this.jwtService.sign(jwtPayload);
-
-        return {
-            bearerToken,
-        };
     }
 }

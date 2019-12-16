@@ -9,7 +9,7 @@ export const jpgFileFilter = (req, file, callback) => {
 
 export const dynamicFileName = (req, file, callback) => {
     const orginalName = file.originalname.split('.')[0];
-    const fileExtension = extname(file.originalname);
+    const fileExtension = '.webp';
     const dynamicString = Math.random().toString(36).substring(7);
     callback(null, `${orginalName}-${dynamicString}${fileExtension}`);
 };

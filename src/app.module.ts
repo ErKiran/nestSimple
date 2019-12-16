@@ -8,7 +8,7 @@ import { ImageUploadModule } from './imageUpload/imageUpload.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: 'src/.env',
+      envFilePath: '.env',
       isGlobal: true,
     }),
     TypeOrmModule.forRoot(typeOrmConfig),
