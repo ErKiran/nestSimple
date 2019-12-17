@@ -5,7 +5,7 @@ import { diskStorage } from 'multer';
 import { dynamicFileName, jpgFileFilter } from './utils/imageUpload.helper';
 
 @Controller()
-@UseGuards(AuthGuard('jwt'))
+@UseGuards(AuthGuard())
 export class ImageUploadController {
     @Post('images')
     @UseInterceptors(FileInterceptor('image', {

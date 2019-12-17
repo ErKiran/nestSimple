@@ -1,0 +1,12 @@
+database:
+  port: 3306
+  username: 'root'
+  password: 'password'
+  synchronize: true
+  hostname: 'localhost'
+
+jwt:
+  secret:'heyye/*-+953638'
+
+main:
+  port: 8080  

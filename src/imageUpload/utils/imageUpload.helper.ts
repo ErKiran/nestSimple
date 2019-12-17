@@ -1,5 +1,3 @@
-import { extname } from 'path';
-
 export const jpgFileFilter = (req, file, callback) => {
     if (!file.originalname.match(/\.(jpg)$/)) {
         return callback(new Error('Only image files with .jpg exension are allowed!'), false);
